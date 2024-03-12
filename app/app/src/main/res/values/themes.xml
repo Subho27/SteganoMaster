@@ -1,9 +1,31 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.SteganoMaster" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    <style name="Base.Theme.SteganoMaster" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary Brand Color. -->
+        <item name="colorPrimary">@color/primary_color</item>
+        <item name="colorPrimaryVariant">@color/primary_color</item>
+        <item name="colorOnPrimary">@color/white</item>
+
+        <!-- Secondary Brand Color. -->
+        <item name="colorSecondary">@color/secondary_color</item>
+        <item name="colorSecondaryVariant">@color/secondary_color</item>
+        <item name="colorOnSecondary">@color/white</item>
+
+        <!-- Text Brand Color. -->
+        <item name="android:textColor">@color/black</item>
+
+        <!-- Status Bar Color. -->
+        <item name="android:statusBarColor">@color/primary_color</item>
     </style>
 
     <style name="Theme.SteganoMaster" parent="Base.Theme.SteganoMaster" />
+
+    <style name="Theme.SteganoMaster.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.SteganoMaster.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.SteganoMaster.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

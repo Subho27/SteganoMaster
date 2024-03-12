@@ -1,7 +1,20 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.SteganoMaster" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+    <style name="Base.Theme.SteganoMaster" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary Brand Color. -->
+        <item name="colorPrimary">@color/ternary_color</item>
+        <item name="colorPrimaryVariant">@color/ternary_color</item>
+        <item name="colorOnPrimary">@color/black</item>
+
+        <!-- Secondary Brand Color. -->
+        <item name="colorSecondary">@color/fourth_color</item>
+        <item name="colorSecondaryVariant">@color/fourth_color</item>
+        <item name="colorOnSecondary">@color/black</item>
+
+        <!-- Text Brand Color. -->
+        <item name="android:textColor">@color/white</item>
+
+        <!-- Status Bar Color. -->
+        <item name="android:statusBarColor">@color/primary_color</item>
     </style>
 </resources>
