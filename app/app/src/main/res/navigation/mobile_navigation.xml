@@ -3,23 +3,35 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@+id/nav_hide">
 
     <fragment
-        android:id="@+id/nav_home"
-        android:name="com.example.steganomaster.ui.home.HomeFragment"
+        android:id="@+id/nav_hide"
+        android:name="com.example.steganomaster.ui.hide.HideFragment"
         android:label="@string/menu_hide"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_hide" />
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.example.steganomaster.ui.gallery.GalleryFragment"
+        android:id="@+id/nav_expose"
+        android:name="com.example.steganomaster.ui.expose.ExposeFragment"
         android:label="@string/menu_expose"
-        tools:layout="@layout/fragment_gallery" />
+        tools:layout="@layout/fragment_expose" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.example.steganomaster.ui.slideshow.SlideshowFragment"
+        android:id="@+id/nav_key_exchange"
+        android:name="com.example.steganomaster.ui.key_exchange.KeyExchangeFragment"
         android:label="@string/menu_key_exchange"
-        tools:layout="@layout/fragment_slideshow" />
+        tools:layout="@layout/fragment_key_exchange" />
+
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="com.example.steganomaster.ui.profile.ProfileFragment"
+        android:label="@string/menu_profile"
+        tools:layout="@layout/fragment_profile" />
+
+    <fragment
+        android:id="@+id/nav_settings"
+        android:name="com.example.steganomaster.ui.settings.SettingsFragment"
+        android:label="@string/menu_settings"
+        tools:layout="@layout/fragment_settings" />
 </navigation>

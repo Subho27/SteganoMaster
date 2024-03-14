@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.hide.HideFragment"
+    android:padding="10sp">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10sp">
+
+            <TextView
+                android:id="@+id/secret_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SECRET MESSAGE"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:layout_centerHorizontal="true"/>
+
+            <TextView
+                android:id="@+id/secret_type_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Choose the secret message type you want to send"
+                android:layout_marginTop="5sp"
+                android:layout_below="@+id/secret_header"/>
+
+            <Spinner
+                android:id="@+id/secret_type_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_below="@+id/secret_type_text"
+                android:layout_marginTop="10sp" />
+
+            <LinearLayout
+                android:id="@+id/secret_upload_section"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10sp"
+                android:layout_below="@id/secret_type_spinner">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/secret_upload"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight=".40"
+                    android:text="Select a file"
+                    app:cornerRadius="32sp"/>
+
+                <TextView
+                    android:id="@+id/secret_upload_name"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight=".60"
+                    android:text="No File Selected"
+                    android:textSize="16sp"
+                    android:paddingStart="20sp"
+                    android:paddingTop="12sp"
+                    android:paddingBottom="10sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/important"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="10sp"
+                android:padding="10sp"
+                android:visibility="gone"
+                android:background="@drawable/important_background"
+                android:layout_below="@+id/secret_upload_section">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="Important"
+                    android:textSize="14sp"
+                    app:drawableStartCompat="@drawable/important" />
+
+                <TextView
+                    android:id="@+id/important_message"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Target file should have size greater than 20MB."/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/target_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TARGET FILE"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:layout_marginTop="40sp"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/important"/>
+
+            <TextView
+                android:id="@+id/target_type_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Choose the secret message type you want to send"
+                android:layout_marginTop="5sp"
+                android:layout_below="@+id/target_header"/>
+
+            <Spinner
+                android:id="@+id/target_type_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_below="@+id/target_type_text"
+                android:layout_marginTop="10sp" />
+
+            <LinearLayout
+                android:id="@+id/target_upload_section"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10sp"
+                android:layout_below="@id/target_type_spinner">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/target_upload"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight=".40"
+                    android:text="Select a file"
+                    app:cornerRadius="32sp"/>
+
+                <TextView
+                    android:id="@+id/target_upload_name"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight=".60"
+                    android:text="No File Selected"
+                    android:textSize="16sp"
+                    android:paddingStart="20sp"
+                    android:paddingTop="12sp"
+                    android:paddingBottom="10sp"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/encryption_method_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Choose a key to encrypt your message"
+                android:layout_marginTop="40sp"
+                android:layout_below="@+id/target_upload_section"/>
+
+            <RadioGroup
+                android:id="@+id/encryption_method"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10sp"
+                android:checkedButton="@id/private_key"
+                android:layout_below="@+id/encryption_method_text">
+
+                <RadioButton
+                    android:id="@+id/private_key"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Use YOUR PRIVATE KEY to encrypt. You need to share your public key to others" />
+
+                <RadioButton
+                    android:id="@+id/public_key"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Use RECEIVER'S PUBLIC KEY to encrypt. You do not need to share anything."/>
+            </RadioGroup>
+
+            <LinearLayout
+                android:id="@+id/use_public_key"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="5sp"
+                android:visibility="gone"
+                android:layout_below="@+id/encryption_method">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".40"
+                    android:text="Use PUBLIC KEY of :"/>
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".60"
+                    android:drawableEnd="@drawable/search"
+                    />
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/start_embed"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:text="Start Embedding"
+                app:cornerRadius="32sp"
+                android:layout_marginTop="10sp"
+                android:layout_below="@id/use_public_key"/>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

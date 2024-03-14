@@ -1,16 +1,16 @@
-package com.example.steganomaster.ui.slideshow;
+package com.example.steganomaster.ui.hide;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class SlideshowViewModel extends ViewModel {
+public class HideViewModel extends ViewModel {
 
     private final MutableLiveData<String> mText;
 
-    public SlideshowViewModel() {
+    public HideViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is slideshow fragment");
+        mText.setValue("This is hide fragment");
     }
 
     public LiveData<String> getText() {
