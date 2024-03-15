@@ -1,7 +1,13 @@
 package com.example.steganomaster.ui.hide;
 
+import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.res.AssetFileDescriptor;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.OpenableColumns;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -16,6 +22,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -25,11 +35,51 @@ import com.example.steganomaster.R;
 import com.example.steganomaster.databinding.FragmentHideBinding;
 import com.google.android.material.button.MaterialButton;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.DecimalFormat;
 import java.util.Objects;
 
 public class HideFragment extends Fragment {
 
     private FragmentHideBinding binding;
+    String secretFileType = "text", targetFileType ="text";
+    Uri secretFile = null, targetFile = null;
+    double secretFileSizeInMB = 0;
+
+    ActivityResultLauncher<Intent> getSecretFileUri = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    assert result.getData() != null;
+                    secretFile = result.getData().getData();
+                    if(secretFile != null) {
+                        secretFileSizeInMB = getFileSizeFromUri(secretFile);
+                        TextView secretFileName = binding.secretUploadName;
+                        secretFileName.setText(getFileNameFromUri(secretFile));
+                    }
+                }
+            });
+
+    ActivityResultLauncher<Intent> getTargetFileUri = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    assert result.getData() != null;
+                    targetFile = result.getData().getData();
+                    if (targetFile != null) {
+                        Double targetFileSizeInMB = getFileSizeFromUri(targetFile);
+                        if(targetFileSizeInMB > secretFileSizeInMB) {
+                            TextView targetFileName = binding.targetUploadName;
+                            targetFileName.setText(getFileNameFromUri(targetFile));
+                        }
+                        else {
+                            Toast.makeText(getContext(), "Please, upload file of size greater than " + String.valueOf(secretFileSizeInMB), Toast.LENGTH_SHORT).show();
+                            targetFile = null;
+                        }
+                    }
+                }
+            });
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -38,9 +88,17 @@ public class HideFragment extends Fragment {
         View root = binding.getRoot();
         final String[] secret_type_array = getResources().getStringArray(R.array.secret_type_array);
 
+        final Spinner secret_type_spinner = binding.secretTypeSpinner;
+        final MaterialButton secretFileUpload = binding.secretUpload;
+        final Spinner target_type_spinner = binding.targetTypeSpinner;
+        final MaterialButton targetFileUpload = binding.targetUpload;
+        RadioButton publicKeyRadio = binding.publicKey;
+        LinearLayout searchPublicKey = binding.usePublicKey;
+        LinearLayout importantSection = binding.important;
+        TextView secretUploadName = binding.secretUploadName;
+        TextView importantText = binding.importantMessage;
 
 //        Secret Message Choose
-        final Spinner secret_type_spinner = binding.secretTypeSpinner;
         ArrayAdapter<CharSequence> secretAdapter = ArrayAdapter.createFromResource(
                 requireActivity(),
                 R.array.secret_type_array,
@@ -52,27 +110,25 @@ public class HideFragment extends Fragment {
         secret_type_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getContext(), secret_type_array[position], Toast.LENGTH_SHORT).show();
+                secretFileType = secret_type_array[position].toLowerCase();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                Toast.makeText(getContext(), secret_type_array[0], Toast.LENGTH_SHORT).show();
+                secretFileType = secret_type_array[0].toLowerCase();
             }
         });
 
 
 //        Secret File upload
-        final MaterialButton secretFileUpload = binding.secretUpload;
         secretFileUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showFileChooser();
+                showSecretFileChooser();
             }
         });
 
 //        Target File Choose
-        final Spinner target_type_spinner = binding.targetTypeSpinner;
         ArrayAdapter<CharSequence> targetAdapter = ArrayAdapter.createFromResource(
                 requireActivity(),
                 R.array.secret_type_array,
@@ -84,19 +140,31 @@ public class HideFragment extends Fragment {
         target_type_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getContext(), secret_type_array[position], Toast.LENGTH_SHORT).show();
+                targetFileType = secret_type_array[position].toLowerCase();
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-                Toast.makeText(getContext(), secret_type_array[0], Toast.LENGTH_SHORT).show();
+                targetFileType = secret_type_array[0].toLowerCase();
+            }
+        });
+
+
+//        Target File upload
+        targetFileUpload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(secretUploadName.getText().toString().equals("No File Selected")) {
+                    Toast.makeText(getContext(), "Please, upload secret file first.", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    showTargetFileChooser();
+                }
             }
         });
 
 
 //        Choose Encryption method
-        RadioButton publicKeyRadio = binding.publicKey;
-        LinearLayout searchPublicKey = binding.usePublicKey;
         publicKeyRadio.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -115,8 +183,6 @@ public class HideFragment extends Fragment {
 
 
 //        No secret file is chosen yet
-        LinearLayout importantSection = binding.important;
-        TextView secretUploadName = binding.secretUploadName;
         secretUploadName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -125,9 +191,11 @@ public class HideFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s != "No File Selected") {
-                    if(importantSection.getVisibility() != View.VISIBLE)
+                if(!s.toString().equals("No File Selected")) {
+                    if(importantSection.getVisibility() != View.VISIBLE) {
+                        importantText.setText("Target file should have size greater than " + secretFileSizeInMB + " MB.");
                         importantSection.setVisibility(View.VISIBLE);
+                    }
                 }
                 else {
                     if(importantSection.getVisibility() != View.GONE)
@@ -150,16 +218,63 @@ public class HideFragment extends Fragment {
         binding = null;
     }
 
-    private void showFileChooser() {
+    private void showSecretFileChooser() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("*/*");
+        intent.setType(secretFileType + "/*");
         intent.addCategory(Intent.CATEGORY_OPENABLE);
 
         try {
-            startActivityForResult(Intent.createChooser(intent, "Select a File to Upload"), FILE_SELECT_CODE);
+            getSecretFileUri.launch(Intent.createChooser(intent, "Select Secret File to Upload"));
         } catch (android.content.ActivityNotFoundException ex) {
             // Handle exception
             Toast.makeText(getContext(), "Please install a File Manager.", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void showTargetFileChooser() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType(targetFileType + "/*");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+
+        try {
+            getTargetFileUri.launch(Intent.createChooser(intent, "Select Target File to Upload"));
+        } catch (android.content.ActivityNotFoundException ex) {
+            // Handle exception
+            Toast.makeText(getContext(), "Please install a File Manager.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private String getFileNameFromUri(Uri uri) {
+        String fileName = null;
+        ContentResolver contentResolver = requireContext().getContentResolver();
+        Cursor cursor = contentResolver.query(uri, null, null, null, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            int nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+
+            fileName = cursor.getString(nameIndex);
+            cursor.close();
+        }
+        if (fileName == null) {
+            String path = uri.getPath();
+            if (path != null) {
+                fileName = new File(path).getName();
+            }
+        }
+        return fileName;
+    }
+
+    private Double getFileSizeFromUri(Uri uri) {
+        Double fileSize = 0.0;
+        ContentResolver contentResolver = requireContext().getContentResolver();
+        Cursor cursor = contentResolver.query(uri, null, null, null, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            int sizeIndex = cursor.getColumnIndex(OpenableColumns.SIZE);
+            fileSize = cursor.getDouble(sizeIndex);
+            cursor.close();
+        }
+        fileSize = fileSize / (1000 * 1000);
+        DecimalFormat decimalFormat = new DecimalFormat("#.###");
+        fileSize = Double.valueOf(decimalFormat.format(fileSize));
+        return fileSize;
     }
 }
