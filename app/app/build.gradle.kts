@@ -3,15 +3,15 @@ plugins {
 }
 
 android {
-    namespace = "com.example.steganomaster"
+    namespace = "com.steganomaster.steganomaster"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.steganomaster"
+        applicationId = "com.steganomaster.steganomaster"
         minSdk = 26
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 3
+        versionName = "1.0.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

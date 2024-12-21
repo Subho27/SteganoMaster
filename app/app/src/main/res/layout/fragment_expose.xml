@@ -1,22 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.expose.ExposeFragment">
+    tools:context=".ui.expose.ExposeFragment"
+    android:padding="10sp">
 
-    <TextView
-        android:id="@+id/text_expose"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10sp">
+
+            <TextView
+                android:id="@+id/embedded_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="EMBEDDED FILE"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:layout_centerHorizontal="true"/>
+
+            <TextView
+                android:id="@+id/embedded_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Choose the file where message is embedded"
+                android:layout_marginTop="5sp"
+                android:layout_below="@+id/embedded_header"/>
+
+            <LinearLayout
+                android:id="@+id/embedded_upload_section"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10sp"
+                android:layout_below="@id/embedded_text">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/embedded_upload"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_weight=".40"
+                    android:text="Select a file"
+                    app:cornerRadius="32sp"/>
+
+                <TextView
+                    android:id="@+id/embedded_upload_name"
+                    android:layout_width="0dp"
+                    android:layout_height="60dp"
+                    android:layout_weight=".60"
+                    android:text="No File Selected"
+                    android:textSize="16sp"
+                    android:paddingStart="20sp"
+                    android:paddingTop="12sp"
+                    android:paddingBottom="10sp"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/decryption_method_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Choose a key to decrypt your message"
+                android:layout_marginTop="40sp"
+                android:layout_below="@+id/embedded_upload_section"/>
+
+            <RadioGroup
+                android:id="@+id/decryption_method"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10sp"
+                android:checkedButton="@id/decrypt_private_key"
+                android:layout_below="@+id/decryption_method_text">
+
+                <RadioButton
+                    android:id="@+id/decrypt_private_key"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Use YOUR PRIVATE KEY to decrypt when encryption was done with your public key." />
+
+                <RadioButton
+                    android:id="@+id/decrypt_public_key"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Use RECEIVER'S PUBLIC KEY to decrypt when encryption was done with receiver's private key."/>
+            </RadioGroup>
+
+            <LinearLayout
+                android:id="@+id/decrypt_use_public_key"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="5sp"
+                android:visibility="gone"
+                android:layout_below="@+id/decryption_method">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".40"
+                    android:text="Use PUBLIC KEY of :"/>
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".60"
+                    android:drawableEnd="@drawable/search" />
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/start_embed"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:text="Start Exposing"
+                app:cornerRadius="32sp"
+                android:layout_marginTop="10sp"
+                android:layout_below="@id/decrypt_use_public_key"/>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

@@ -20,6 +20,7 @@
     <string name="menu_hide">Hide</string>
     <string name="menu_expose">Expose</string>
     <string name="menu_key_exchange">Key Exchange</string>
+    <string name="menu_key_vault">Key Vault</string>
     <string name="menu_profile">Profile</string>
     <string name="menu_settings">Settings</string>
     <string name="menu_logout">Logout</string>

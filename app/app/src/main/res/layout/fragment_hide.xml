@@ -52,7 +52,7 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/secret_upload"
                     android:layout_width="0dp"
-                    android:layout_height="48dp"
+                    android:layout_height="60dp"
                     android:layout_weight=".40"
                     android:text="Select a file"
                     app:cornerRadius="32sp"/>
@@ -110,7 +110,7 @@
                 android:id="@+id/target_type_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Choose the secret message type you want to send"
+                android:text="Choose the target file you want to use"
                 android:layout_marginTop="5sp"
                 android:layout_below="@+id/target_header"/>
 
@@ -132,7 +132,7 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/target_upload"
                     android:layout_width="0dp"
-                    android:layout_height="48dp"
+                    android:layout_height="60dp"
                     android:layout_weight=".40"
                     android:text="Select a file"
                     app:cornerRadius="32sp"/>
@@ -170,7 +170,7 @@
                     android:id="@+id/private_key"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Use YOUR PRIVATE KEY to encrypt. You need to share your public key to others" />
+                    android:text="Use YOUR PRIVATE KEY to encrypt. You need to share your public key to receiver." />
 
                 <RadioButton
                     android:id="@+id/public_key"
@@ -205,7 +205,7 @@
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/start_embed"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="60dp"
                 android:text="Start Embedding"
                 app:cornerRadius="32sp"
                 android:layout_marginTop="10sp"

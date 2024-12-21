@@ -17,6 +17,10 @@
             android:icon="@drawable/exchange"
             android:title="@string/menu_key_exchange" />
         <item
+            android:id="@+id/nav_key_vault"
+            android:icon="@drawable/key_vault"
+            android:title="@string/menu_key_vault" />
+        <item
             android:id="@+id/nav_profile"
             android:icon="@drawable/profile"
             android:title="@string/menu_profile" />
